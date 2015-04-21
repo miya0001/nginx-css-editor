@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEI,+BACA;EACI,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI",
+"sources": ["admin-nginx-css-editor.scss"],
+"names": [],
+"file": "admin-nginx-css-editor.css"
+}
