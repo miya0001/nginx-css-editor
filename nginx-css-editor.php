@@ -71,6 +71,18 @@ public function plugins_loaded()
     add_action( 'admin_menu', array( $this, 'admin_menu' ) );
     add_action( 'admin_init', array( $this, 'admin_init' ) );
 
+    add_action( 'wp_head', array( $this, 'wp_head' ) );
+}
+
+public function wp_head()
+{
+    echo "<style>";
+    if ( $this->is_mobile() ) {
+        echo get_option( 'nginx-css-editor-sp-style' );
+    } else {
+        echo get_option( 'nginx-css-editor-pc-style' );
+    }
+    echo "</style>";
 }
 
 public function admin_menu()
@@ -87,18 +99,20 @@ public function admin_menu()
 
 public function admin_init()
 {
-    if ( isset( $_POST['_wpnonce_nginx_css_editor'] ) && $_POST['_wpnonce_nginx_css_editor'] ){
-        if ( check_admin_referer( 'nig5mycgoz2gldiign9qdue443ivn29', '_wpnonce_nginx_css_editor' ) ){
+    if ( current_user_can( 'switch_themes' ) ) {
+        if ( isset( $_POST['_wpnonce_nginx_css_editor'] ) && $_POST['_wpnonce_nginx_css_editor'] ){
+            if ( check_admin_referer( 'nig5mycgoz2gldiign9qdue443ivn29', '_wpnonce_nginx_css_editor' ) ){
 
-            if ( isset( $_POST['nginx-css-editor-pc-style'] ) ) {
-                update_option( 'nginx-css-editor-pc-style', $_POST['nginx-css-editor-pc-style'] );
+                if ( isset( $_POST['nginx-css-editor-pc-style'] ) ) {
+                    update_option( 'nginx-css-editor-pc-style', trim( $_POST['nginx-css-editor-pc-style'] ) );
+                }
+
+                if ( isset( $_POST['nginx-css-editor-sp-style'] ) ) {
+                    update_option( 'nginx-css-editor-sp-style', trim( $_POST['nginx-css-editor-sp-style'] ) );
+                }
+
+                wp_safe_redirect( menu_page_url( 'nginx_css_editor', false ) );
             }
-
-            if ( isset( $_POST['nginx-css-editor-sp-style'] ) ) {
-                update_option( 'nginx-css-editor-sp-style', $_POST['nginx-css-editor-sp-style'] );
-            }
-
-            wp_safe_redirect( menu_page_url( 'nginx_css_editor', false ) );
         }
     }
 }
@@ -166,6 +180,25 @@ public function wp_enqueue_scripts()
         $this->version,
         true
     );
+}
+
+public function is_mobile()
+{
+    if ( in_array( $this->mobile_detect(), array( '@smartphone', '@ktai' ) ) ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+public function mobile_detect()
+{
+    $mobile_detect = '';
+    if ( isset( $_SERVER['HTTP_X_UA_DETECT'] ) && $_SERVER['HTTP_X_UA_DETECT'] ) {
+        $mobile_detect = $_SERVER['HTTP_X_UA_DETECT'];
+    }
+
+    return apply_filters( "nginxmobile_mobile_detect", $mobile_detect );
 }
 
 } // end class Nginx_CSS_Editor
