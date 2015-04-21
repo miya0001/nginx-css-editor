@@ -79,7 +79,7 @@ public function admin_menu()
     add_theme_page(
         __( 'Nginx CSS Editor', 'nginx_css_editor' ),
         __( 'Nginx CSS Editor', 'nginx_css_editor' ),
-        'manage_options', // http://codex.wordpress.org/Roles_and_Capabilities
+        'switch_themes', // http://codex.wordpress.org/Roles_and_Capabilities
         'nginx_css_editor',
         array( $this, 'options_page' )
     );
@@ -90,7 +90,13 @@ public function admin_init()
     if ( isset( $_POST['_wpnonce_nginx_css_editor'] ) && $_POST['_wpnonce_nginx_css_editor'] ){
         if ( check_admin_referer( 'nig5mycgoz2gldiign9qdue443ivn29', '_wpnonce_nginx_css_editor' ) ){
 
-            // save something
+            if ( isset( $_POST['nginx-css-editor-pc-style'] ) ) {
+                update_option( 'nginx-css-editor-pc-style', $_POST['nginx-css-editor-pc-style'] );
+            }
+
+            if ( isset( $_POST['nginx-css-editor-sp-style'] ) ) {
+                update_option( 'nginx-css-editor-sp-style', $_POST['nginx-css-editor-sp-style'] );
+            }
 
             wp_safe_redirect( menu_page_url( 'nginx_css_editor', false ) );
         }
@@ -108,11 +114,11 @@ public function options_page()
 
 <h3>PC Style</h3>
 
-<textarea name="nginx-css-editor-pc-style" class="style-editor"></textarea>
+<textarea name="nginx-css-editor-pc-style" class="style-editor"><?php echo esc_textarea( get_option( 'nginx-css-editor-pc-style' ) ); ?></textarea>
 
 <h3>SP Style</h3>
 
-<textarea name="nginx-css-editor-pc-style" class="style-editor"></textarea>
+<textarea name="nginx-css-editor-sp-style" class="style-editor"><?php echo esc_textarea( get_option( 'nginx-css-editor-sp-style' ) ); ?></textarea>
 
 <p style="margin-top: 3em;">
     <input type="submit" name="submit" id="submit" class="button button-primary"
@@ -124,7 +130,6 @@ public function options_page()
 
 public function admin_enqueue_scripts( $hook )
 {
-    var_dump( $hook );
     if ( 'appearance_page_nginx_css_editor' === $hook ) {
         wp_enqueue_style(
             'admin-nginx_css_editor-style',
