@@ -35,14 +35,10 @@ module.exports = function( grunt ) {
     uglify: {
       all: {
         files: {
-          
+
           'js/admin-nginx-css-editor.min.js': [
             'js/admin-nginx-css-editor.js'
           ],
-          
-          'js/nginx-css-editor.min.js': [
-            'js/nginx-css-editor.js'
-          ]
         },
         options: {
           banner: '/**\n' +
@@ -63,7 +59,7 @@ module.exports = function( grunt ) {
     test:   {
       files: ['js/test/**/*.js']
     },
-    
+
     sass:   {
       all: {
         options: {
@@ -71,12 +67,11 @@ module.exports = function( grunt ) {
           sourcemap: 'auto'
         },
         files: {
-          'css/admin-nginx-css-editor.css': 'css/admin-nginx-css-editor.scss',
-          'css/nginx-css-editor.css': 'css/nginx-css-editor.scss'
+          'css/admin-nginx-css-editor.css': 'css/admin-nginx-css-editor.scss'
         }
       }
     },
-    
+
     cssmin: {
       options: {
         banner: '/**\n' +
@@ -101,7 +96,7 @@ module.exports = function( grunt ) {
       }
     },
     watch:  {
-      
+
       sass: {
         files: ['css/*.scss'],
         tasks: ['sass', 'cssmin'],
@@ -109,7 +104,7 @@ module.exports = function( grunt ) {
           debounceDelay: 500
         }
       },
-      
+
       scripts: {
         files: ['js/*.js', '!js/*.min.js'],
         tasks: ['jshint', 'uglify'],
@@ -124,15 +119,15 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
-  
+
   grunt.loadNpmTasks('grunt-contrib-sass');
-  
+
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  
+
   grunt.registerTask('default', ['jshint', 'uglify', 'sass', 'cssmin']);
-  
+
 
   grunt.util.linefeed = '\n';
 };

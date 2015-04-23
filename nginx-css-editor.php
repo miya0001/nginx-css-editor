@@ -30,7 +30,6 @@
  */
 
 
-
 define( 'NGINX_CSS_EDITOR_URL',  plugins_url( '', __FILE__ ) );
 define( 'NGINX_CSS_EDITOR_PATH', dirname( __FILE__ ) );
 
@@ -59,13 +58,11 @@ public function register()
 
 public function plugins_loaded()
 {
-    load_plugin_textdomain(
-        'nginx_css_editor',
-        false,
-        dirname( plugin_basename( __FILE__ ) ).$this->langs
-    );
-
-    add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
+    // load_plugin_textdomain(
+    //     'nginx_css_editor',
+    //     false,
+    //     dirname( plugin_basename( __FILE__ ) ).$this->langs
+    // );
 
     add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
     add_action( 'admin_menu', array( $this, 'admin_menu' ) );
